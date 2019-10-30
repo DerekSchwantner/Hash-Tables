@@ -7,6 +7,7 @@ class LinkedPair:
         self.value = value
         self.next = None
 
+
 class HashTable:
     '''
     A hash table that with `capacity` buckets
@@ -51,7 +52,31 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index =  self._hash_mod(key)
+
+        index = self._hash_mod(key)
+
+        # check if key already exists, if not, create new LinkedPair
+        if self.storage[index] == None:
+            self.storage[index] = LinkedPair(key, value)
+        else:
+            current = self.storage[index]
+
+            if current.key == key:
+                current.value = value
+                return
+
+            while current.next:
+                if current.next.key == key:
+                    current.next.value = value
+                    return
+
+                else:
+                    current = current.next
+            # if check gets all the way through, chain a new LinkedPair on the end with the key, value
+            current.next = LinkedPair(key, value)
+
+
 
 
     def remove(self, key):
