@@ -54,7 +54,6 @@ class HashTable:
         pass
 
 
-
     def remove(self, key):
         '''
         Remove the value stored with the given key.
@@ -63,7 +62,26 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
+
+        current_node = self.storage[index]
+        if current_node:
+            last_node = None
+            # while the current node exists
+            while current_node:
+                if current_node.key == key:
+                    # change pointer if last node is not None
+                    if last_node:
+                        last_node.next = current_node.next
+                    else:
+                        self.storage[index] = current_node.next
+                last_node = current_node
+                current_node = current_node.next
+        else:
+            # If you try to remove a value that isn't there, print a warning.
+            print("Unable to remove item")
+            # Should return None if the key is not found.
+            return None
 
 
     def retrieve(self, key):
@@ -74,7 +92,16 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
+
+        current_node = self.storage[index]
+        while current_node:
+            if current_node.key == key:
+                return current_node.value
+            else:
+                current_node = current_node.next
+        return None
+
 
 
     def resize(self):
@@ -84,7 +111,17 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        self.capacity *= 2
+        new_storage = [None] * self.capacity
+        old_storage = self.storage
+        self.storage = new_storage
+
+        for i in old_storage:
+            current_loop = i
+            while current_loop:
+                self.insert(current_loop.key, current_loop.value)
+                current_loop = current_loop.next
+
 
 
 
